@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 9</title>
+    <script>
+        var quarters = [ "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" ]
+
+        function ChooseQuarter(first){
+            document.getElementById("lbl_firstMonth").innerHTML = quarters[Number(first) * 3]
+            document.getElementById("lbl_secondMonth").innerHTML = quarters[Number(first) * 3 + 1]
+            document.getElementById("lbl_thirdMonth").innerHTML = quarters[Number(first) * 3 + 2]
+        }
+
+        function Calculate(){
+            var first = Number(document.getElementById("txt_firstMonth").value)
+            var second = Number(document.getElementById("txt_secondMonth").value)
+            var third = Number(document.getElementById("txt_thirdMonth").value)
+            var firstM = document.getElementById("lbl_firstMonth").innerHTML
+            var secondM = document.getElementById("lbl_secondMonth").innerHTML
+            var thirdM = document.getElementById("lbl_thirdMonth").innerHTML
+            var tax = (first + second + third) * 0.13
+            var sum = first + second + third - tax
+            var quarter = document.getElementById("quarterSelector").value
+            var name = document.getElementById("txt_Name").value
+            var form = ""
+            if(document.getElementById("rdb_male").checked)
+                form += "Уважаемый "
+            else if(document.getElementById("rdb_female").checked)
+                form += "Уважаемая "
+
+            form += name + "\nВаш доход за " + quarter + "<br>" +
+            "<table style='border=1; border-style:solid;'><tr><td>" + firstM + "</td><td>" + secondM + "</td><td>" + thirdM + "</td><td>Налог</td><td>Итого</td></tr><tr>" + 
+            "<td>" + first + "</td><td>" + second + "</td><td>" + third + "</td><td>" + tax + "</td><td>" + sum + "</td>"
+            document.getElementById("OutputForm").innerHTML = form
+        }
+
+        function Clear(){
+            document.getElementById("lbl_firstMonth").innerHTML = ""
+            document.getElementById("lbl_secondMonth").innerHTML = ""
+            document.getElementById("lbl_thirdMonth").innerHTML = ""
+            document.getElementById("txt_firstMonth").value = ""
+            document.getElementById("txt_secondMonth").value = ""
+            document.getElementById("txt_thirdMonth").value = ""
+            document.getElementById("OutputForm").innerHTML = ""
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Обработка формы</h1><br>
+    <label for="txt_Name">Введите имя: </label><textarea name="txt_Name" id="txt_Name" rows="1"></textarea><br>
+    <label>Укажите Ваш пол:</label><br>
+    <input type="radio" name="gender" id="rdb_male" value="М"><label for="rdb_male">М</label>
+    <input type="radio" name="gender" id="rdb_female" value="Ж"><label for="rdb_female">Ж</label><br>
+    <label for="quarterSelector">Укажите квартал:</label><br>
+    <select name="quarterSelector" id="quarterSelector" onchange="ChooseQuarter(this.selectedIndex)">
+        <option value="1 квартал">1 квартал</option>
+        <option value="2 квартал">2 квартал</option>
+        <option value="3 квартал">3 квартал</option>
+        <option value="4 квартал">4 квартал</option>
+    </select>
+<div style="display: block; border: 1px; border-style: solid; padding: 10px; margin-top: 10px;">
+        <title>Доход</title>
+        <label id="lbl_firstMonth" for="txt_firstMonth" style="width: 100px; display: inline-block;"></label><textarea id="txt_firstMonth" rows="1"></textarea><br>
+        <label id="lbl_secondMonth" for="txt_secondMonth" style="width: 100px; display: inline-block;"></label><textarea id="txt_secondMonth" rows="1"></textarea><br>
+        <label id="lbl_thirdMonth" for="txt_thirdMonth" style="width: 100px; display: inline-block;"></label><textarea id="txt_thirdMonth" rows="1"></textarea><br>
+        <button onclick="Calculate()">Отправить</button><button onclick="Clear()">Очистить</button>
+</div>
+<div id="OutputForm" style="display: block; border: 1px; border-style: solid; padding: 10px; margin-top: 10px;">
+
+</div>
+</body>
+</html>

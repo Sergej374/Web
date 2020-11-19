@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 7</title>
+    <script>
+        var months = [ 'Январь', 'Февраль', 'Март', "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+        var selector = document.getElementById("Selector");
+
+        function Select(value){
+            var lbl = document.getElementById("lbl1");
+            var txt = document.getElementById("txt1");
+            lbl.innerHTML = "Этот месяц \n" + months[value];
+            txt.innerHTML = months[value];
+        }
+    </script>
+</head>
+<body>
+    <h1>Месяцы</h1>
+    <select id="Selector" onchange="Select(this.value)" style="margin-bottom: 10px;">
+        <option value="0">Январь</option>
+        <option value="1">Февраль</option>
+        <option value="2">Март</option>
+        <option value="3">Апрель</option>
+        <option value="4">Май</option>
+        <option value="5">Июнь</option>
+        <option value="6">Июль</option>
+        <option value="7">Август</option>
+        <option value="8">Сентябрь</option>
+        <option value="9">Октябрь</option>
+        <option value="10">Ноябрь</option>
+        <option value="11">Декабрь</option>
+    </select><br>
+    <label for="txt1" id="lbl1" style="margin-right: 5px;">Этот месяц</label>
+    <textarea name="txt1" id="txt1" rows="1"></textarea>
+</body>
+</html>

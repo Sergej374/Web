@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        var array;
+            var numbersQuantity = 0;
+            var minNumber = 0;
+            var maxNumber = 0;
+            var sum = 0;
+        function SolveArray(){
+            sum = 0;
+            numbersQuantity = Number(document.Form.txt_quantity.value);
+            minNumber = Number(document.Form.txt_min.value);
+            maxNumber = Number(document.Form.txt_max.value);
+            array = new Array(numbersQuantity);
+            for(var i = 0; i < numbersQuantity; i++){
+                array[i] = Math.floor(Math.random() * (maxNumber - minNumber) + minNumber);
+                sum += array[i];
+            }
+            
+            document.Form.txt_result.value = sum;
+        }
+
+        function ShowArray(){
+            document.write("<h1>Элементы массива</h1><h2>Числа от " + minNumber + " до " + maxNumber + "</h2><table border=1><tr>");
+            for(var i = 1; i <= numbersQuantity; i++){
+                document.write("<td>" + i + "</td>");
+            }
+            document.write("<td>Сумма</td></tr><tr>");
+            array.forEach(number => {
+                document.write("<td>" + number + "</td>");
+            });
+            document.write("<td>" + sum + "</td></tr></table>");
+        }
+    </script>
+</head>
+<body>
+    <form name="Form">
+        <h2>Работа с текстовыми полями</h2>
+        <label for="txt_min">Минимальное значение</label><textarea name="txt_min" rows="1"></textarea><br>
+        <label for="txt_max">Максимальное значение</label><textarea name="txt_max" rows="1"></textarea><br>
+        <label for="txt_quantity">Количество элементов</label><textarea name="txt_quantity" rows="1"></textarea><br>
+        <label for="txt_result">Результат</label><textarea name="txt_result" rows="1"></textarea><br>
+        <button type="button" onclick="SolveArray()">Вычислить сумму</button>
+        <button type="button" onclick="ShowArray()">Показать массив</button>
+    </form>    
+</body>
+</html>

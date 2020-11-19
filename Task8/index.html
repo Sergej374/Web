@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Task8</title>
+    <script>
+        var canvas;
+        var drawer;
+        var colors;
+        function Colors(){
+            canvas = document.getElementById("Canvas");
+            drawer = canvas.getContext("2d");
+            colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+
+            canvas.width = window.innerWidth - 40;
+            canvas.height = window.innerHeight - 40;
+
+            for(var col = 0, step = 0; col < colors.length; col++, step+=4){
+                for(var i = 1; i <= 4; i++){
+                    drawer.globalAlpha = i/4    ;
+                    drawer.fillStyle = colors[col];
+                    drawer.fillRect((step + i) * 30, 0, 30, 30*4);
+                }
+            }
+        }
+        function Circles(){
+            drawer.clearRect(0, 0, canvas.width, canvas.height);
+            var lastX = 0;
+            var lastY = 0;
+            drawer.lineWidth = 5;
+            for(var i = 0; i < 30; i++){
+                var width = Math.random() * 40 + 20;
+                
+                drawer.fillStyle = 'red';
+                drawer.moveTo(lastX + width*2, width);
+                drawer.arc(lastX + width, width, width, 0, Math.PI*2, false);
+                drawer.stroke();
+                lastX = lastX + width*2;
+                lastY = lastY + width * 2;
+            }
+        }
+    </script>
+</head>
+<body onload="Colors()">
+    <canvas id="Canvas" style="background: aqua;"></canvas>
+    <button onclick="Circles()">C</button>
+</body>
+</html>
