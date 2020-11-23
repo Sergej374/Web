@@ -25,24 +25,40 @@
         }
         function Circles(){
             drawer.clearRect(0, 0, canvas.width, canvas.height);
-            var lastX = 0;
-            var lastY = 0;
             drawer.lineWidth = 5;
+
+
             for(var i = 0; i < 30; i++){
-                var width = Math.random() * 40 + 20;
-                
-                drawer.fillStyle = 'red';
-                drawer.moveTo(lastX + width*2, width);
-                drawer.arc(lastX + width, width, width, 0, Math.PI*2, false);
-                drawer.stroke();
-                lastX = lastX + width*2;
-                lastY = lastY + width * 2;
+                var radius = Math.random() * 40 + 20;
+                var x = Math.random() * canvas.width;
+
+                if(x + radius > canvas.width){
+                    x -= radius;
+                }else if(x - radius < 0){
+                    x += radius;
+                }
+
+                var y = Math.random() * canvas.height;
+                if(y + radius > canvas.height){
+                    y -= radius;
+                }else if(y - radius < 0){
+                    y += radius;
+                }
+
+                var color = 'rgb(' + Math.random() * 255 + ', ' + Math.random() * 255 + ', ' + Math.random() * 255 + ')';
+                drawer.fillStyle = color;
+
+
+                drawer.beginPath();
+                drawer.arc(x, y, radius, 0, 2 * Math.PI, false);
+                drawer.fill();
             }
         }
     </script>
 </head>
 <body onload="Colors()">
-    <canvas id="Canvas" style="background: aqua;"></canvas>
-    <button onclick="Circles()">C</button>
+    <canvas id="Canvas" style="background: aqua;"></canvas><br>
+    <button onclick="Colors()">Colors</button>
+    <button onclick="Circles()">Circles</button>
 </body>
 </html>

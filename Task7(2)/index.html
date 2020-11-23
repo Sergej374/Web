@@ -43,11 +43,15 @@
             document.getElementById("txt_secondMonth").value = ""
             document.getElementById("txt_thirdMonth").value = ""
             document.getElementById("OutputForm").innerHTML = ""
+            document.getElementById("txt_Name").value = ""
+            document.getElementById("rdb_male").checked = false
+            document.getElementById("rdb_female").checked = false
+            document.getElementById("quarterSelector").selectedIndex = -1
         }
 
     </script>
 </head>
-<body>
+<body onload="Clear()">
     <h1>Обработка формы</h1><br>
     <label for="txt_Name">Введите имя: </label><textarea name="txt_Name" id="txt_Name" rows="1"></textarea><br>
     <label>Укажите Ваш пол:</label><br>
