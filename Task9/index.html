@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Task10</title>
+    <title>Task Animations</title>
     
 </head>
 <body>
@@ -10,46 +10,50 @@
     <script>
         var canvas = document.getElementById("Canvas");
         const drawer = canvas.getContext('2d');
-        const width = canvas.width = window.innerWidth - 40;
-        const height = canvas.height = window.innerHeight - 40;
+        const width = canvas.width = window.innerWidth - 20;
+        const height = canvas.height = window.innerHeight - 20;
+        const ballsQuantity = 30;
+        const ballsMinRadius = 40;
+        const ballsMaxRadius = 70;
+        const ballsMaxSpeed = 10;
 
         
         function Ball() {
+            this.collision = null;
             this.isColliding = false;
-            this.isExitedCollider = false;
-            this.size = Math.random() * 40 + 10;
+            this.radius = Math.random() * ballsMaxRadius + ballsMinRadius;
             this.x = Math.random() * width;
-            if(this.x + this.size > width){
-                this.x -= this.size;
-            }else if(this.x - this.size < 0){
-                this.x += this.size;
+            if(this.x + this.radius > width){
+                this.x -= this.radius;
+            }else if(this.x - this.radius < 0){
+                this.x += this.radius;
             }
             this.y = Math.random() * height;
-            if(this.y + this.size > height){
-                this.y -= this.size;
-            }else if(this.y - this.size < 0){
-                this.y += this.size;
+            if(this.y + this.radius > height){
+                this.y -= this.radius;
+            }else if(this.y - this.radius < 0){
+                this.y += this.radius;
             }
-            this.velX = Math.random() * 10;
-            this.velY = Math.random() * 10;
+            this.velX = Math.random() * ballsMaxSpeed;
+            this.velY = Math.random() * ballsMaxSpeed;
             this.color = 'rgba(' + Math.random() * 255 + ', ' + Math.random() * 255 + ', ' + Math.random() * 255 + ', 1)';
             Ball.prototype.draw = function() {
             drawer.beginPath();
             drawer.fillStyle = this.color;
-            drawer.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+            drawer.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
             drawer.fill();
             }
             Ball.prototype.update = function() {
-            if ((this.x + this.size) >= width) {
+            if ((this.x + this.radius) >= width) {
             this.velX = -(this.velX);
             }
-            if ((this.x - this.size) <= 0) {
+            if ((this.x - this.radius) <= 0) {
             this.velX = -(this.velX);
             }
-            if ((this.y + this.size) >= height) {
+            if ((this.y + this.radius) >= height) {
             this.velY = -(this.velY);
             }
-            if ((this.y - this.size) <= 0) {
+            if ((this.y - this.radius) <= 0) {
             this.velY = -(this.velY);
             }
             this.x += this.velX;
@@ -57,23 +61,23 @@
 
             balls.forEach(ball => {
                 if(!(this === ball)){
-                    var distance = Math.sqrt(this.x * ball.x + this.y * ball.y) - this.size - ball.size;
+                    var distance = Math.sqrt(Math.pow(this.x - ball.x, 2) + Math.pow(this.y - ball.y, 2)) - this.radius - ball.radius;
                     if(distance < 0){
                         if(!this.isColliding){
                             this.isColliding = true;
+                            this.collision = ball;
                             this.color = 'rgba(' + Math.random() * 255 + ', ' + Math.random() * 255 + ', ' + Math.random() * 255 + ', 1)';
                         }
-                    }else{
-                        if(this.isColliding){
-                            this.isColliding = false;
-                        }
+                    }else if(this.collision === ball){
+                        this.collision = null;
+                        this.isColliding = false;
                     }
                 }
             });
             }
         }
         
-        let balls = new Array(30);
+        let balls = new Array(ballsQuantity);
         for(var i = 0; i < balls.length; i++){
             balls[i] = new Ball();
             balls[i].draw();
@@ -88,9 +92,6 @@
             requestAnimationFrame(loop);
             }
             loop();
-
-
-
     </script>
 </body>
 </html>
