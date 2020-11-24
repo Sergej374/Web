@@ -7,21 +7,73 @@
 </head>
 <body>
     <canvas id="Canvas" style="background: rgba(0, 0, 0, 0.25);"></canvas>
+    <label for="SpeedK">Speed</label>
+    <input type="range" name="SpeedK" id="SpeedK" min="0" max="1" step="0.01" value="0.5" oninput="ChangeSpeed(this.value)" onchange="ChangeSpeed(this.value)">
+    <label for="SizeK">Size</label>
+    <input type="range" min="0.1" max="1" step="0.01" value="0.5" name="SizeK" id="SizeK" oninput="ChangeSize(this.value)" onchange="ChangeSize(this.value)">
+    <label for="TailK">Tails</label>
+    <input type="range" name="TailK" id="TailK" min="0.1" max="0.9" value="0.5" step="0.01" oninput="ChangeTails(this.value)" onchange="ChangeTails(this.value)">
+    <label>Quantity</label>
+    <button onclick="PopBall()">-1</button>
+    <input type="text" name="ballsQuantity" id="ballsQuantity" onchange="Start()" style="width: 30px;">
+    <button onclick="AddBall()">+1</button>
     <script>
         var canvas = document.getElementById("Canvas");
         const drawer = canvas.getContext('2d');
-        const width = canvas.width = window.innerWidth - 20;
-        const height = canvas.height = window.innerHeight - 20;
-        const ballsQuantity = 30;
-        const ballsMinRadius = 40;
-        const ballsMaxRadius = 70;
-        const ballsMaxSpeed = 10;
+        const width = canvas.width = window.innerWidth - 30;
+        const height = canvas.height = window.innerHeight - 50;
+        let ballsSpeedK = 0.5;
+        let ballsSizeK = 0.5;
+        let TailsLength = 0.25;
+        var ballsQuantity = 30;
+        const ballsMinRadius = 20;
+        const ballsMaxRadius = 100;
+        const ballsMaxSpeed = 30;
+        let balls = new Array(ballsQuantity);
+        var quantitier = document.getElementById("ballsQuantity");
+        quantitier.value = ballsQuantity;
 
+        function AddBall(){
+            ballsQuantity = quantitier.value = balls.push(new Ball())
+        }
+
+        function PopBall(){
+            balls.pop();
+            ballsQuantity = balls.length;
+            quantitier.value = balls.length;
+        }
+
+        function ChangeTails(value){
+            TailsLength = 1.0 - Number(value);
+        }
+
+        function ChangeSpeed(value){
+            ballsSpeedK = Number(value);
+        }
+
+        function ChangeSize(value){
+            ballsSizeK = Number(value);
+            balls.forEach(ball => {
+                ball.radius = ball.firstRadius * ballsSizeK;
+            });
+        }
         
+        function Start(){
+            ballsQuantity = Number(quantitier.value);
+            balls = new Array(ballsQuantity);
+            for(var i = 0; i < balls.length; i++){
+                balls[i] = new Ball();
+                balls[i].draw();
+            }
+        }
+
+        Start();
+
         function Ball() {
             this.collision = null;
             this.isColliding = false;
-            this.radius = Math.random() * ballsMaxRadius + ballsMinRadius;
+            this.firstRadius = Math.random() * ballsMaxRadius + ballsMinRadius;
+            this.radius = this.firstRadius * ballsSizeK;
             this.x = Math.random() * width;
             if(this.x + this.radius > width){
                 this.x -= this.radius;
@@ -34,8 +86,8 @@
             }else if(this.y - this.radius < 0){
                 this.y += this.radius;
             }
-            this.velX = Math.random() * ballsMaxSpeed;
-            this.velY = Math.random() * ballsMaxSpeed;
+            this.velX = this.startVelX = Math.random() * ballsMaxSpeed * ballsSpeedK;
+            this.velY = this.startVelY = Math.random() * ballsMaxSpeed * ballsSpeedK;
             this.color = 'rgba(' + Math.random() * 255 + ', ' + Math.random() * 255 + ', ' + Math.random() * 255 + ', 1)';
             Ball.prototype.draw = function() {
             drawer.beginPath();
@@ -44,20 +96,25 @@
             drawer.fill();
             }
             Ball.prototype.update = function() {
+
             if ((this.x + this.radius) >= width) {
             this.velX = -(this.velX);
+            this.x = width - this.radius;
             }
             if ((this.x - this.radius) <= 0) {
             this.velX = -(this.velX);
+            this.x = this.radius;
             }
             if ((this.y + this.radius) >= height) {
             this.velY = -(this.velY);
+            this.y = height - this.radius;
             }
             if ((this.y - this.radius) <= 0) {
             this.velY = -(this.velY);
+            this.y = this.radius;
             }
-            this.x += this.velX;
-            this.y += this.velY;
+            this.x += this.velX * ballsSpeedK;
+            this.y += this.velY * ballsSpeedK;
 
             balls.forEach(ball => {
                 if(!(this === ball)){
@@ -76,14 +133,9 @@
             });
             }
         }
-        
-        let balls = new Array(ballsQuantity);
-        for(var i = 0; i < balls.length; i++){
-            balls[i] = new Ball();
-            balls[i].draw();
-        }
+
         function loop() {
-            drawer.fillStyle = 'rgba(0, 0, 0, 0.25)';
+            drawer.fillStyle = 'rgba(0, 0, 0, ' + TailsLength + ')';
             drawer.fillRect(0, 0, width, height);
             for (let i = 0; i < balls.length; i++) {
             balls[i].draw();
